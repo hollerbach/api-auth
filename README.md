@@ -226,45 +226,45 @@ GOOGLE_CLIENT_SECRET=seu_google_client_secret
 
 | Método | Endpoint                          | Descrição                      |
 | ------ | --------------------------------- | ------------------------------ |
-| POST   | /api/v1/auth/register             | Registrar novo usuário         |
-| GET    | /api/v1/auth/verify-email         | Verificar e-mail               |
-| POST   | /api/v1/auth/login                | Login de usuário               |
-| GET    | /api/v1/auth/google               | Iniciar login com Google       |
-| GET    | /api/v1/auth/google/callback      | Callback do login com Google   |
-| POST   | /api/v1/auth/refresh-token        | Renovar tokens                 |
-| POST   | /api/v1/auth/logout               | Logout (invalidar tokens)      |
-| POST   | /api/v1/auth/2fa/setup            | Configurar 2FA                 |
-| POST   | /api/v1/auth/2fa/verify           | Verificar token 2FA            |
-| POST   | /api/v1/auth/2fa/disable          | Desativar 2FA                  |
-| POST   | /api/v1/auth/password-reset/request | Solicitar redefinição de senha |
-| POST   | /api/v1/auth/password-reset/confirm | Confirmar redefinição de senha |
-| GET    | /api/v1/users/profile             | Obter perfil do usuário        |
-| PUT    | /api/v1/users/profile             | Atualizar perfil               |
-| PUT    | /api/v1/users/password            | Alterar senha                  |
-| GET    | /api/v1/users                     | Listar usuários (admin)        |
-| GET    | /api/v1/users/:id                 | Obter usuário por ID (admin)   |
-| PUT    | /api/v1/users/:id                 | Atualizar usuário (admin)      |
-| DELETE | /api/v1/users/:id                 | Desativar usuário (admin)      |
+| POST   | /api/auth/register             | Registrar novo usuário         |
+| GET    | /api/auth/verify-email         | Verificar e-mail               |
+| POST   | /api/auth/login                | Login de usuário               |
+| GET    | /api/auth/google               | Iniciar login com Google       |
+| GET    | /api/auth/google/callback      | Callback do login com Google   |
+| POST   | /api/auth/refresh-token        | Renovar tokens                 |
+| POST   | /api/auth/logout               | Logout (invalidar tokens)      |
+| POST   | /api/auth/2fa/setup            | Configurar 2FA                 |
+| POST   | /api/auth/2fa/verify           | Verificar token 2FA            |
+| POST   | /api/auth/2fa/disable          | Desativar 2FA                  |
+| POST   | /api/auth/password-reset/request | Solicitar redefinição de senha |
+| POST   | /api/auth/password-reset/confirm | Confirmar redefinição de senha |
+| GET    | /api/users/profile             | Obter perfil do usuário        |
+| PUT    | /api/users/profile             | Atualizar perfil               |
+| PUT    | /api/users/password            | Alterar senha                  |
+| GET    | /api/users                     | Listar usuários (admin)        |
+| GET    | /api/users/:id                 | Obter usuário por ID (admin)   |
+| PUT    | /api/users/:id                 | Atualizar usuário (admin)      |
+| DELETE | /api/users/:id                 | Desativar usuário (admin)      |
 
 ### RBAC (Controle de Acesso)
 
 | Método | Endpoint                          | Descrição                      |
 | ------ | --------------------------------- | ------------------------------ |
-| GET    | /api/v1/rbac/roles                | Listar papéis                  |
-| POST   | /api/v1/rbac/roles                | Criar papel                    |
-| GET    | /api/v1/rbac/roles/:id            | Obter papel por ID             |
-| PUT    | /api/v1/rbac/roles/:id            | Atualizar papel                |
-| DELETE | /api/v1/rbac/roles/:id            | Remover papel                  |
-| GET    | /api/v1/rbac/permissions          | Listar permissões              |
-| POST   | /api/v1/rbac/permissions          | Criar permissão                |
-| GET    | /api/v1/rbac/permissions/:id      | Obter permissão por ID         |
-| PUT    | /api/v1/rbac/permissions/:id      | Atualizar permissão            |
-| DELETE | /api/v1/rbac/permissions/:id      | Remover permissão              |
-| POST   | /api/v1/rbac/roles/:roleId/permissions/:permissionId | Adicionar permissão a papel |
-| DELETE | /api/v1/rbac/roles/:roleId/permissions/:permissionId | Remover permissão de papel |
-| POST   | /api/v1/rbac/users/:userId/roles/:roleId | Atribuir papel a usuário |
-| DELETE | /api/v1/rbac/users/:userId/roles/:roleId | Remover papel de usuário |
-| GET    | /api/v1/rbac/users/:userId/roles  | Listar papéis de um usuário    |
+| GET    | /api/rbac/roles                | Listar papéis                  |
+| POST   | /api/rbac/roles                | Criar papel                    |
+| GET    | /api/rbac/roles/:id            | Obter papel por ID             |
+| PUT    | /api/rbac/roles/:id            | Atualizar papel                |
+| DELETE | /api/rbac/roles/:id            | Remover papel                  |
+| GET    | /api/rbac/permissions          | Listar permissões              |
+| POST   | /api/rbac/permissions          | Criar permissão                |
+| GET    | /api/rbac/permissions/:id      | Obter permissão por ID         |
+| PUT    | /api/rbac/permissions/:id      | Atualizar permissão            |
+| DELETE | /api/rbac/permissions/:id      | Remover permissão              |
+| POST   | /api/rbac/roles/:roleId/permissions/:permissionId | Adicionar permissão a papel |
+| DELETE | /api/rbac/roles/:roleId/permissions/:permissionId | Remover permissão de papel |
+| POST   | /api/rbac/users/:userId/roles/:roleId | Atribuir papel a usuário |
+| DELETE | /api/rbac/users/:userId/roles/:roleId | Remover papel de usuário |
+| GET    | /api/rbac/users/:userId/roles  | Listar papéis de um usuário    |
 
 ## Documentação da API
 
@@ -348,7 +348,7 @@ router.get(
 router.put(
   '/products/:id',
   requirePermission('PRODUCT_EDIT', {
-    resourcePath: '/api/v1/products/:id'
+    resourcePath: '/api/products/:id'
   }),
   asyncHandler(productController.updateProduct)
 );

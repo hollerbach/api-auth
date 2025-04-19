@@ -65,7 +65,7 @@ app.use(csrfProtection);
 app.use(csrfErrorHandler);
 
 // Rota para obter um token CSRF (usado pelo frontend)
-app.get('/api/v1/csrf-token', (req, res) => {
+app.get('/api/csrf-token', (req, res) => {
   const { generateToken } = require('./infrastructure/security/csrf.config');
   res.json({ csrfToken: generateToken(req, res) });
 });

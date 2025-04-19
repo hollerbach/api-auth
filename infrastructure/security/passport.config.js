@@ -64,7 +64,7 @@ module.exports = (passport) => {
         {
           clientID: config.oauth.google.clientId,
           clientSecret: config.oauth.google.clientSecret,
-          callbackURL: config.oauth.google.callbackUrl || `${config.app.url}/api/v1/auth/google/callback`,
+          callbackURL: config.oauth.google.callbackUrl || `${config.app.url}/api/auth/google/callback`,
           scope: ['profile', 'email']
         },
         async (accessToken, refreshToken, profile, done) => {

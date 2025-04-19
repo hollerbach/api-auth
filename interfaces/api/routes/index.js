@@ -35,7 +35,7 @@ const setupRoutes = (app) => {
   app.get('/health', healthController.checkHealth);
 
   // API v1 routes
-  const apiPrefix = '/api/v1';
+  const apiPrefix = '/api';
 
   // Montar as rotas de autenticação
   app.use(`${apiPrefix}/auth`, authRoutes);

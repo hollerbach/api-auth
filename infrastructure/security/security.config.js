@@ -153,7 +153,7 @@ const securityConfig = {
       secure: config.app.env === 'production',
       sameSite: 'strict',
       maxAge: 30 * 24 * 60 * 60 * 1000, // 30 dias
-      path: '/api/v1/auth', // Restrito apenas para rotas de autenticação
+      path: '/api/auth', // Restrito apenas para rotas de autenticação
       domain: undefined
     }
   },

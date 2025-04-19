@@ -208,25 +208,25 @@ const resources = [
     name: 'API Usuários - Listar',
     description: 'Endpoint para listar usuários',
     type: 'route',
-    path: '/api/v1/users'
+    path: '/api/users'
   },
   {
     name: 'API Usuários - Detalhes',
     description: 'Endpoint para obter detalhes de um usuário',
     type: 'route',
-    path: '/api/v1/users/:id'
+    path: '/api/users/:id'
   },
   {
     name: 'API Usuários - Criar',
     description: 'Endpoint para criar usuários',
     type: 'route',
-    path: '/api/v1/users/create'
+    path: '/api/users/create'
   },
   {
     name: 'API Usuários - Atualizar',
     description: 'Endpoint para atualizar usuários',
     type: 'route',
-    path: '/api/v1/users/:id/update'
+    path: '/api/users/:id/update'
   },
   
   // Recursos de API - RBAC
@@ -234,13 +234,13 @@ const resources = [
     name: 'API RBAC - Papéis',
     description: 'Endpoints para gerenciar papéis',
     type: 'route',
-    path: '/api/v1/rbac/roles'
+    path: '/api/rbac/roles'
   },
   {
     name: 'API RBAC - Permissões',
     description: 'Endpoints para gerenciar permissões',
     type: 'route',
-    path: '/api/v1/rbac/permissions'
+    path: '/api/rbac/permissions'
   },
   
   // Recursos de API - Produtos
@@ -248,25 +248,25 @@ const resources = [
     name: 'API Produtos - Listar',
     description: 'Endpoint para listar produtos',
     type: 'route',
-    path: '/api/v1/products'
+    path: '/api/products'
   },
   {
     name: 'API Produtos - Detalhes',
     description: 'Endpoint para obter detalhes de um produto',
     type: 'route',
-    path: '/api/v1/products/:id'
+    path: '/api/products/:id'
   },
   {
     name: 'API Produtos - Criar',
     description: 'Endpoint para criar produtos',
     type: 'route',
-    path: '/api/v1/products/create'
+    path: '/api/products/create'
   },
   {
     name: 'API Produtos - Atualizar',
     description: 'Endpoint para atualizar produtos',
     type: 'route',
-    path: '/api/v1/products/:id/update'
+    path: '/api/products/:id/update'
   },
   
   // Recursos de API - Pedidos
@@ -274,25 +274,25 @@ const resources = [
     name: 'API Pedidos - Listar',
     description: 'Endpoint para listar pedidos',
     type: 'route',
-    path: '/api/v1/orders'
+    path: '/api/orders'
   },
   {
     name: 'API Pedidos - Detalhes',
     description: 'Endpoint para obter detalhes de um pedido',
     type: 'route',
-    path: '/api/v1/orders/:id'
+    path: '/api/orders/:id'
   },
   {
     name: 'API Pedidos - Criar',
     description: 'Endpoint para criar pedidos',
     type: 'route',
-    path: '/api/v1/orders/create'
+    path: '/api/orders/create'
   },
   {
     name: 'API Pedidos - Atualizar Status',
     description: 'Endpoint para atualizar status de pedidos',
     type: 'route',
-    path: '/api/v1/orders/:id/status'
+    path: '/api/orders/:id/status'
   },
   
   // Recursos de Menu

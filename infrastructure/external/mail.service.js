@@ -52,7 +52,7 @@ class MailService {
    * @param {string} token Token de verificação
    */
   async sendVerificationEmail(to, token) {
-    const verificationUrl = `${config.app.baseUrl}/api/v1/auth/verify-email?token=${token}`;
+    const verificationUrl = `${config.app.baseUrl}/api/auth/verify-email?token=${token}`;
 
     const mailOptions = {
       to,
