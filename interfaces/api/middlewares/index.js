@@ -50,7 +50,7 @@ const setupMiddlewares = (app) => {
     // Função para sanitizar parâmetros duplicados nas queries
     const sanitizeQuery = (query) => {
       const result = {};
-      
+
       for (const [key, value] of Object.entries(query)) {
         // Se for um array (parâmetro duplicado), usar apenas o último valor
         if (Array.isArray(value)) {
@@ -59,13 +59,21 @@ const setupMiddlewares = (app) => {
           result[key] = value;
         }
       }
-      
+
       return result;
     };
-    
-    // Sanitizar query params
-    req.query = sanitizeQuery(req.query);
-    
+
+    // Instead of replacing req.sanitizedQuery, create a new property
+    req._sanitizedQuery = sanitizeQuery(req.sanitizedQuery);
+
+    // Override req.sanitizedQuery methods to use our sanitized version
+    // Create a middleware that adds a getter to access the sanitized query
+    Object.defineProperty(req, 'sanitizedQuery', {
+      get: function () {
+        return req._sanitizedQuery;
+      }
+    });
+
     next();
   });
 
@@ -102,14 +110,14 @@ const setupMiddlewares = (app) => {
   // Limitar métodos HTTP permitidos
   app.use((req, res, next) => {
     const allowedMethods = ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'];
-    
+
     if (!allowedMethods.includes(req.method)) {
-      return res.status(405).json({ 
+      return res.status(405).json({
         error: 'Method Not Allowed',
         message: `O método ${req.method} não é permitido`
       });
     }
-    
+
     next();
   });
 };

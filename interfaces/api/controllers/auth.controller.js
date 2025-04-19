@@ -37,7 +37,7 @@ class AuthController {
    * Verifica o e-mail do usuário
    */
   async verifyEmail(req, res) {
-    const { token } = req.query;
+    const { token } = req.sanitizedQuery;
     const verifyEmailUseCase = AuthUseCaseFactory.createVerifyEmailUseCase();
     const result = await verifyEmailUseCase.execute(token, req.ip);
 

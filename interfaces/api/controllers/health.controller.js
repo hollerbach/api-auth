@@ -14,7 +14,7 @@ class HealthController {
   async checkHealth(req, res) {
     try {
       // Verificar o nível de detalhe solicitado
-      const detailed = req.query.detailed === 'true';
+      const detailed = req.sanitizedQuery.detailed === 'true';
       
       // Obter o status de saúde da aplicação
       const healthStatus = await healthMonitor.checkHealth();

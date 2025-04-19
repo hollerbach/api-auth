@@ -150,9 +150,9 @@ const sanitizeInputs = () => {
     }
     
     // Sanitizar query strings
-    if (req.query) {
-      req.query = sanitizeXss(req.query);
-      req.query = mongoSanitize(req.query);
+    if (req.sanitizedQuery) {
+      req.sanitizedQuery = sanitizeXss(req.sanitizedQuery);
+      req.sanitizedQuery = mongoSanitize(req.sanitizedQuery);
     }
     
     next();

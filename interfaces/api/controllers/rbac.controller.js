@@ -38,7 +38,7 @@ class RbacController {
    * @param {Response} res Express Response
    */
   async getAllRoles(req, res) {
-    const { page, limit, sort, order, search, isSystem } = req.query;
+    const { page, limit, sort, order, search, isSystem } = req.sanitizedQuery;
 
     const options = {
       page: parseInt(page) || 1,
@@ -148,7 +148,7 @@ class RbacController {
    * @param {Response} res Express Response
    */
   async getAllPermissions(req, res) {
-    const { page, limit, sort, order, search, category } = req.query;
+    const { page, limit, sort, order, search, category } = req.sanitizedQuery;
 
     const options = {
       page: parseInt(page) || 1,

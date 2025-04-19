@@ -82,7 +82,7 @@ class UserController {
    * @param {Response} res Express Response
    */
   async getAllUsers(req, res) {
-    const { page = 1, limit = 20, sort = 'email', order = 'asc', search } = req.query;
+    const { page = 1, limit = 20, sort = 'email', order = 'asc', search } = req.sanitizedQuery;
 
     const options = {
       page: parseInt(page, 10),
