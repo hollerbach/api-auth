@@ -12,7 +12,7 @@ require('dotenv').config({
 });
 
 // Importações principais
-const { app } = require('./app');
+const app = require('./app');
 const { connectToDatabase } = require('./infrastructure/database/mongodb/connection');
 const logger = require('./infrastructure/logging/logger');
 const config = require('./infrastructure/config');
@@ -70,7 +70,8 @@ const startServer = async () => {
 
     return server;
   } catch (error) {
-    logger.error('❌ Erro ao iniciar a aplicação:', error.message);
+    logger.error(`❌ Erro ao iniciar a aplicação: ${error.message}`);
+    logger.error(`Stack trace: ${error.stack}`);
     process.exit(1);
   }
 };

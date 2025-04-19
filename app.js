@@ -72,7 +72,10 @@ app.get('/api/csrf-token', (req, res) => {
 });
 
 // Configurar rotas da API
+console.log("Setting up routes...");
 setupRoutes(app);
+console.log("Routes setup complete");
+
 
 // Middleware de tratamento de erros
 app.use(errorMiddleware.errorHandler);
