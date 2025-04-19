@@ -4,6 +4,9 @@ const ExtractJwt = require('passport-jwt').ExtractJwt;
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const userRepository = require('../database/mongodb/repositories/user.repository');
 const config = require('../config');
+const logger = require('../logging/logger');
+const { NotFoundError } = require('../../shared/errors/api-error');
+const crypto = require('crypto');
 
 /**
  * Configura as estratégias de autenticação do Passport
@@ -41,80 +44,112 @@ module.exports = (passport) => {
           return done(null, false, { message: 'Conta desativada' });
         }
 
-        // O payload básico do JWT já contém id, email e role
+        // Retornar informações básicas do usuário
         return done(null, {
           id: user.id,
           email: user.email,
           role: user.role
         });
       } catch (error) {
+        logger.error(`Erro na autenticação JWT: ${error.message}`);
         return done(error, false);
       }
     })
   );
 
-  // Configurar a estratégia OAuth Google (se as credenciais estiverem disponíveis)
+  // Configurar a estratégia OAuth Google
   if (config.oauth?.google?.clientId && config.oauth?.google?.clientSecret) {
     passport.use(
       new GoogleStrategy(
         {
           clientID: config.oauth.google.clientId,
           clientSecret: config.oauth.google.clientSecret,
-          callbackURL: `${config.app.url}/api/v1/auth/google/callback`,
+          callbackURL: config.oauth.google.callbackUrl || `${config.app.url}/api/v1/auth/google/callback`,
           scope: ['profile', 'email']
         },
         async (accessToken, refreshToken, profile, done) => {
           try {
-            // Extrair informações do perfil
-            const { id, emails, displayName, photos } = profile;
-            
-            if (!emails || !emails.length) {
-              return done(null, false, { message: 'Email não fornecido pelo Google' });
+            // Verificar se o usuário já existe com este googleId
+            let user = await userRepository.findByOAuthId('google', profile.id);
+
+            // Se não existir, verificar se o email já está registrado
+            if (!user && profile.emails && profile.emails.length > 0) {
+              const email = profile.emails[0].value;
+              user = await userRepository.findByEmail(email);
+
+              // Se o usuário existe mas não tem o Google ID, vincular
+              if (user) {
+                user.linkOAuthAccount('google', {
+                  id: profile.id,
+                  email: email,
+                  name: profile.displayName,
+                  picture: profile.photos?.[0]?.value
+                });
+                
+                // Usuários do Google são considerados verificados
+                if (!user.verified) {
+                  user.verifyEmail();
+                }
+                
+                await userRepository.save(user);
+                logger.info(`Usuário ${email} vinculou conta do Google`);
+              }
             }
 
-            const email = emails[0].value;
-            const picture = photos && photos.length ? photos[0].value : null;
-
-            // Verificar se o usuário já existe
-            let user = await userRepository.findByEmail(email);
-
-            if (user) {
-              // Atualizar informações do OAuth se necessário
-              if (!user.oauth?.google?.id) {
-                user.oauth = {
-                  ...(user.oauth || {}),
-                  google: {
-                    id,
-                    email,
-                    name: displayName,
-                    picture
-                  }
-                };
-                await userRepository.save(user);
+            // Se ainda não existe, criar um novo usuário
+            if (!user) {
+              const email = profile.emails?.[0]?.value;
+              if (!email) {
+                return done(new NotFoundError('Email não fornecido pelo Google'));
               }
-            } else {
-              // Criar um novo usuário
-              user = await userRepository.createWithOAuth({
+
+              // Gerar senha aleatória segura (o usuário não a utilizará)
+              const randomPassword = crypto.randomBytes(20).toString('hex');
+
+              // Criar novo usuário
+              user = await userRepository.create({
                 email,
-                name: displayName,
+                password: randomPassword,
+                role: 'user',
+                verified: true, // Contas OAuth são verificadas por padrão
                 oauth: {
                   google: {
-                    id,
-                    email,
-                    name: displayName,
-                    picture
+                    id: profile.id,
+                    email: email,
+                    name: profile.displayName,
+                    picture: profile.photos?.[0]?.value
                   }
                 },
-                verified: true // Já verificado pelo Google
+                name: profile.displayName || profile.name?.givenName,
+                surname: profile.name?.familyName
               });
+
+              logger.info(`Novo usuário criado via Google: ${email}`);
             }
 
             return done(null, user);
           } catch (error) {
-            return done(error, false);
+            logger.error(`Erro na autenticação Google: ${error.message}`);
+            return done(error);
           }
         }
       )
     );
   }
+
+  // Serialização (necessária mesmo sem sessões para alguns casos)
+  passport.serializeUser((user, done) => {
+    done(null, user.id);
+  });
+
+  passport.deserializeUser(async (id, done) => {
+    try {
+      const user = await userRepository.findById(id);
+      done(null, user);
+    } catch (error) {
+      done(error);
+    }
+  });
+
+  logger.info('Passport configurado com sucesso');
 };
