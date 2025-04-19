@@ -13,6 +13,7 @@ const config = require('./infrastructure/config');
 const setupRoutes = require('./interfaces/api/routes');
 const errorMiddleware = require('./interfaces/api/middlewares/error.middleware');
 const mongoSanitize = require('express-mongo-sanitize');
+
 const path = require('path');
 
 const app = express();
@@ -74,10 +75,10 @@ app.get('/api/csrf-token', (req, res) => {
 setupRoutes(app);
 
 // Middleware de tratamento de erros
-app.use(errorMiddleware);
+app.use(errorMiddleware.errorHandler);
 
 // Rota padrão para lidar com caminhos inexistentes
-app.all('*', (req, res) => {
+app.use((req, res) => {
   res.status(404).json({
     status: 'error',
     message: `Can't find ${req.originalUrl} on this server!`

@@ -50,6 +50,20 @@ for (const envVar of dbEnvVars) {
   }
 }
 
+// Add this to your config/index.js after loading environment variables
+function validateURL(url, name) {
+  try {
+    new URL(url);
+  } catch (e) {
+    console.error(`Invalid URL format for ${name}: ${url}`);
+    // Return a safe default or throw an error
+  }
+}
+
+// Then use it
+validateURL(process.env.BASE_URL, 'BASE_URL');
+
+
 // Valores padrão para ambiente de desenvolvimento
 const getMongoURI = () => {
   // Se estamos em desenvolvimento e faltam credenciais, usamos uma conexão local

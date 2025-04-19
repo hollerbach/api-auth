@@ -85,14 +85,6 @@ const setupMiddlewares = (app) => {
   require('../../../infrastructure/security/passport');
   app.use(passport.initialize());
 
-  // Health check - rota simples para verificar se API está rodando
-  app.get('/health', (req, res) => {
-    res.status(200).json({
-      status: 'UP',
-      timestamp: new Date().toISOString()
-    });
-  });
-
   // Middleware para forçar o fechamento de conexões HTTP vulneráveis
   // Adicionando header que força o navegador a usar HTTPS
   if (process.env.NODE_ENV === 'production') {

@@ -56,7 +56,7 @@ const startServer = async () => {
         logger.info(`📚 Documentação disponível em: http://localhost:${config.app.port}/docs`);
       }
     });
-
+   
     // Configurar gerenciamento de desligamento gracioso
     gracefulShutdown.registerServer(server);
 
